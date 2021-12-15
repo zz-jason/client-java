@@ -27,10 +27,10 @@ jobs:
           # mdbook-version: 'latest'
 
       - run: mdbook build ./docs
+      - run: echo "The github.ref is ${{ github.ref }}"
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
-        run: echo "The github.ref is ${{ github.ref }}"
         if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
