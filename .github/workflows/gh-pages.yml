@@ -24,7 +24,7 @@ jobs:
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.base_ref == 'refs/heads/master' }}
+        if: ${{ github.base_ref == 'base_refs/heads/master' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/book
