@@ -57,4 +57,3 @@ See [Contribution Guide](/docs/dev-guide.md) for references about how to contrib
 ## License
 
 Apache 2.0 license. See the [LICENSE](./LICENSE) file for details.
-
