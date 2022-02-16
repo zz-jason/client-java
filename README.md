@@ -17,7 +17,7 @@ It is supposed to:
 Build java client from source file:
 
 ```sh
-mvn clean install -Dmaven.test.skip=true
+mvn clean install -Dmaven.test.skip=true  
 ```
 
 Add maven dependency to `pom.xml`:
