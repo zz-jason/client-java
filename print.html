@@ -1,0 +1,718 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>TiKV Java Client User Documents</title>
+        
+        <meta name="robots" content="noindex" />
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction/introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="examples/introduction.html"><strong aria-hidden="true">2.</strong> Start With Examples</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="examples/quick-start.html"><strong aria-hidden="true">2.1.</strong> Quick Start</a></li><li class="chapter-item expanded "><a href="examples/rawkv.html"><strong aria-hidden="true">2.2.</strong> Interact with TiKV RawKV API</a></li><li class="chapter-item expanded "><a href="examples/txnkv.html"><strong aria-hidden="true">2.3.</strong> Interact with TiKV TxnKV API</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.4.</strong> TiKV RawKV Bulk Load</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> Performance</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">3.1.</strong> YCSB Benchmarks</div></li></ol></li><li class="chapter-item expanded "><a href="administration/introduction.html"><strong aria-hidden="true">4.</strong> Administration</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="administration/configuration.html"><strong aria-hidden="true">4.1.</strong> Configuration</a></li><li class="chapter-item expanded "><a href="administration/monitoring.html"><strong aria-hidden="true">4.2.</strong> Monitoring</a></li></ol></li><li class="chapter-item expanded "><a href="troubleshooting/introduction.html"><strong aria-hidden="true">5.</strong> Troubleshooting</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="troubleshooting/slow-request.html"><strong aria-hidden="true">5.1.</strong> Slow Request Diagnosis</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.2.</strong> Error Request Diagnosis</div></li></ol></li><li class="chapter-item expanded "><a href="architecture/introduction.html"><strong aria-hidden="true">6.</strong> Architecture and Internals</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="architecture/request-lifecycle.html"><strong aria-hidden="true">6.1.</strong> The Lifecycle of A Request</a></li><li class="chapter-item expanded "><a href="architecture/availability.html"><strong aria-hidden="true">6.2.</strong> Backoff and Retry Policy</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.3.</strong> Slow Log and Metrics</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">6.4.</strong> Region Cache</div></li></ol></li><li class="chapter-item expanded "><a href="contribution/introduction.html"><strong aria-hidden="true">7.</strong> Contribution Guide</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="contribution/bug-severity-guide.html"><strong aria-hidden="true">7.1.</strong> Bug Severity Guidelines</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">TiKV Java Client User Documents</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>Welcome to the documents of TiKV Java Client. This document is oriented to:</p>
+<ol>
+<li>
+<p>Application developers who needs to integrate java client to their
+application code. There are documents about best practices, administrations,
+troubleshootings, and internals of TiKV Java Client for developers.</p>
+</li>
+<li>
+<p>TiKV contributors who wish to contribute to TiKV Java Client, become a TiKV
+reviewer, committer, or maintainer. There are documents about setting up
+environment, submitting PR, triage issues, and manage releases in the
+community.</p>
+</li>
+</ol>
+<p>Wish you have a good journey in developing application or contributing to the
+TiKV Java Client.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="start-with-examples"><a class="header" href="#start-with-examples">Start With Examples</a></h1>
+<p>This section contains examples to demonstrate basic usages of the java client.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h1>
+<p>The package is hosted on maven central repository. To build from source, refer to the <a href="examples/../contribution/introduction.html">Contribution Guide</a>.</p>
+<h2 id="create-a-maven-project"><a class="header" href="#create-a-maven-project">Create a maven project</a></h2>
+<p>First download <a href="https://maven.apache.org/download.html">maven</a> and follow the <a href="https://maven.apache.org/install.html">installation instructoins</a>. Then <code>mvn</code> command should be available in the <code>$PATH</code>.</p>
+<p>create a maven project by following command:</p>
+<pre><code>mvn archetype:generate -DgroupId=com.example -DartifactId=java-client-example -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+cd java-client-example
+</code></pre>
+<h2 id="add-dependency"><a class="header" href="#add-dependency">Add dependency</a></h2>
+<p>Add maven dependency to <code>pom.xml</code>.</p>
+<pre><code class="language-xml">&lt;dependency&gt;
+  &lt;groupId&gt;org.tikv&lt;/groupId&gt;
+  &lt;artifactId&gt;tikv-client-java&lt;/artifactId&gt;
+  &lt;version&gt;3.1.0&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+  &lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;
+  &lt;version&gt;1.7.32&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>Now <code>pom.xml</code> should look like this:</p>
+<pre><code class="language-xml">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+  xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;groupId&gt;com.example&lt;/groupId&gt;
+  &lt;artifactId&gt;java-project&lt;/artifactId&gt;
+  &lt;packaging&gt;jar&lt;/packaging&gt;
+  &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+  &lt;name&gt;java-project&lt;/name&gt;
+  &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+  &lt;properties&gt;
+    &lt;maven.compiler.source&gt;1.8&lt;/maven.compiler.source&gt;
+    &lt;maven.compiler.target&gt;1.8&lt;/maven.compiler.target&gt;
+  &lt;/properties&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;junit&lt;/groupId&gt;
+      &lt;artifactId&gt;junit&lt;/artifactId&gt;
+      &lt;version&gt;4.12&lt;/version&gt;
+      &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.tikv&lt;/groupId&gt;
+      &lt;artifactId&gt;tikv-client-java&lt;/artifactId&gt;
+      &lt;version&gt;3.1.0&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;org.slf4j&lt;/groupId&gt;
+      &lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;
+      &lt;version&gt;1.7.32&lt;/version&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre>
+<h2 id="writing-code"><a class="header" href="#writing-code">Writing code</a></h2>
+<p>To interact with TiKV, we should first create a <code>TiConfiguration</code> with PD address, create a <code>TiSession</code> using <code>TiSession.create</code>, and then create a client.
+For example, if we want to put a <code>World</code> in <code>Hello</code> key in RawKV, write the following code in <code>src/main/java/com/example/App.java</code>.</p>
+<pre><code class="language-java">import org.tikv.common.TiConfiguration;
+import org.tikv.common.TiSession;
+import org.tikv.raw.RawKVClient;
+import org.tikv.shade.com.google.protobuf.ByteString;
+
+public class App {
+  public static void main(String[] args) throws Exception {
+    String pdAddr = &quot;127.0.0.1:2379&quot;;
+    // You MUST create a raw configuration if you are using RawKVClient.
+    TiConfiguration conf = TiConfiguration.createRawDefault(pdAddr);
+    try (TiSession session = TiSession.create(conf)) {
+      try (RawKVClient client = session.createRawClient()) {
+        client.put(ByteString.copyFromUtf8(&quot;Hello&quot;), ByteString.copyFromUtf8(&quot;World&quot;));
+        ByteString value = client.get(ByteString.copyFromUtf8(&quot;Hello&quot;));
+        System.out.println(value);
+      }
+    }
+  }
+}
+</code></pre>
+<p>More examples for RawKV and TxnKV are in following chapters.</p>
+<h2 id="running-program"><a class="header" href="#running-program">Running program</a></h2>
+<p>Run following command:</p>
+<pre><code>mvn assembly:assembly -DdescriptorId=jar-with-dependencies
+java -cp target/java-client-example-1.0-SNAPSHOT-jar-with-dependencies.jar com.example.App
+</code></pre>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="rawkv"><a class="header" href="#rawkv">RawKV</a></h1>
+<p>Below is the basic usages of RawKV. See <a href="https://tikv.github.io/client-java/apidocs/org/tikv/raw/RawKVClient">API document</a> to see a full list of methods available.</p>
+<pre><code class="language-java">import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.tikv.common.TiConfiguration;
+import org.tikv.common.TiSession;
+import org.tikv.kvproto.Kvrpcpb;
+import org.tikv.raw.RawKVClient;
+import org.tikv.shade.com.google.protobuf.ByteString;
+
+public class Main {
+  public static void main() {
+    // You MUST create a raw configuration if you are using RawKVClient.
+    TiConfiguration conf = TiConfiguration.createRawDefault(&quot;127.0.0.1:2379&quot;);
+    TiSession session = TiSession.create(conf);
+    RawKVClient client = session.createRawClient();
+
+    // put
+    client.put(ByteString.copyFromUtf8(&quot;k1&quot;), ByteString.copyFromUtf8(&quot;Hello&quot;));
+    client.put(ByteString.copyFromUtf8(&quot;k2&quot;), ByteString.copyFromUtf8(&quot;,&quot;));
+    client.put(ByteString.copyFromUtf8(&quot;k3&quot;), ByteString.copyFromUtf8(&quot;World&quot;));
+    client.put(ByteString.copyFromUtf8(&quot;k4&quot;), ByteString.copyFromUtf8(&quot;!&quot;));
+    client.put(ByteString.copyFromUtf8(&quot;k5&quot;), ByteString.copyFromUtf8(&quot;Raw KV&quot;));
+
+    // get
+    Optional&lt;ByteString&gt; result = client.get(ByteString.copyFromUtf8(&quot;k1&quot;));
+    System.out.println(result.get().toStringUtf8());
+
+    // batch get
+    List&lt;Kvrpcpb.KvPair&gt; list = client.batchGet(new ArrayList&lt;ByteString&gt;() {{
+        add(ByteString.copyFromUtf8(&quot;k1&quot;));
+        add(ByteString.copyFromUtf8(&quot;k3&quot;));
+    }});
+    System.out.println(list);
+
+    // scan
+    list = client.scan(ByteString.copyFromUtf8(&quot;k1&quot;), ByteString.copyFromUtf8(&quot;k6&quot;), 10);
+    System.out.println(list);
+
+    // close
+    client.close();
+    session.close();
+  }
+}
+</code></pre>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="txnkv"><a class="header" href="#txnkv">TxnKV</a></h1>
+<p>Below is the basic usages of TxnKV.
+Data should be written into TxnKV using <a href="https://tikv.github.io/client-java/apidocs/org/tikv/txn/TwoPhaseCommitter.html"><code>TwoPhaseCommitter</code></a>, and be read using <a href="https://tikv.github.io/client-java/apidocs/org/tikv/txn/KVClient.html"><code>org.tikv.txn.KVClient</code></a>.</p>
+<pre><code class="language-java">import java.util.Arrays;
+import java.util.List;
+
+import org.tikv.common.BytePairWrapper;
+import org.tikv.common.ByteWrapper;
+import org.tikv.common.TiConfiguration;
+import org.tikv.common.TiSession;
+import org.tikv.common.util.BackOffer;
+import org.tikv.common.util.ConcreteBackOffer;
+import org.tikv.kvproto.Kvrpcpb.KvPair;
+import org.tikv.shade.com.google.protobuf.ByteString;
+import org.tikv.txn.KVClient;
+import org.tikv.txn.TwoPhaseCommitter;
+
+public class App {
+    public static void main(String[] args) throws Exception {
+        TiConfiguration conf = TiConfiguration.createDefault(&quot;127.0.0.1:2389&quot;);
+        try (TiSession session = TiSession.create(conf)) {
+            // two-phrase write
+            long startTS = session.getTimestamp().getVersion();
+            try (TwoPhaseCommitter twoPhaseCommitter = new TwoPhaseCommitter(session, startTS)) {
+                BackOffer backOffer = ConcreteBackOffer.newCustomBackOff(1000);
+                byte[] primaryKey = &quot;key1&quot;.getBytes(&quot;UTF-8&quot;);
+                byte[] key2 = &quot;key2&quot;.getBytes(&quot;UTF-8&quot;);
+
+                // first phrase: prewrite
+                twoPhaseCommitter.prewritePrimaryKey(backOffer, primaryKey, &quot;val1&quot;.getBytes(&quot;UTF-8&quot;));
+                List&lt;BytePairWrapper&gt; pairs = Arrays
+                        .asList(new BytePairWrapper(key2, &quot;val2&quot;.getBytes(&quot;UTF-8&quot;)));
+                twoPhaseCommitter.prewriteSecondaryKeys(primaryKey, pairs.iterator(), 1000);
+
+                // second phrase: commit
+                long commitTS = session.getTimestamp().getVersion();
+                twoPhaseCommitter.commitPrimaryKey(backOffer, primaryKey, commitTS);
+                List&lt;ByteWrapper&gt; keys = Arrays.asList(new ByteWrapper(key2));
+                twoPhaseCommitter.commitSecondaryKeys(keys.iterator(), commitTS, 1000);
+            }
+
+            try (KVClient kvClient = session.createKVClient()) {
+                long version = session.getTimestamp().getVersion();
+                ByteString key1 = ByteString.copyFromUtf8(&quot;key1&quot;);
+                ByteString key2 = ByteString.copyFromUtf8(&quot;key2&quot;);
+
+                // get value of a single key
+                ByteString val = kvClient.get(key1, version);
+                System.out.println(val);
+
+                // get value of multiple keys
+                BackOffer backOffer = ConcreteBackOffer.newCustomBackOff(1000);
+                List&lt;KvPair&gt; kvPairs = kvClient.batchGet(backOffer, Arrays.asList(key1, key2), version);
+                System.out.println(kvPairs);
+
+                // get value of a range of keys
+                kvPairs = kvClient.scan(key1, ByteString.copyFromUtf8(&quot;key3&quot;), version);
+                System.out.println(kvPairs);
+            }
+        }
+    }
+}
+</code></pre>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="administration"><a class="header" href="#administration">Administration</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h2 id="java-client-configuration-parameter"><a class="header" href="#java-client-configuration-parameter">Java Client Configuration Parameter</a></h2>
+<h3 id="jvm-parameter"><a class="header" href="#jvm-parameter">JVM Parameter</a></h3>
+<p>The following includes JVM related parameters.</p>
+<h4 id="tikvpdaddresses"><a class="header" href="#tikvpdaddresses">tikv.pd.addresses</a></h4>
+<ul>
+<li>pd addresses, separated by comma</li>
+<li>default: 127.0.0.1:2379</li>
+</ul>
+<h4 id="tikvgrpctimeout_in_ms"><a class="header" href="#tikvgrpctimeout_in_ms">tikv.grpc.timeout_in_ms</a></h4>
+<ul>
+<li>timeout of grpc request</li>
+<li>default: 600ms</li>
+</ul>
+<h4 id="tikvgrpcscan_timeout_in_ms"><a class="header" href="#tikvgrpcscan_timeout_in_ms">tikv.grpc.scan_timeout_in_ms</a></h4>
+<ul>
+<li>timeout of scan/delete range grpc request</li>
+<li>default: 20s</li>
+</ul>
+<h4 id="tikvimportermax_kv_batch_bytes"><a class="header" href="#tikvimportermax_kv_batch_bytes">tikv.importer.max_kv_batch_bytes</a></h4>
+<ul>
+<li>Maximal package size transporting from clients to TiKV Server (ingest API)</li>
+<li>default: 1048576 (1M)</li>
+</ul>
+<h4 id="tikvimportermax_kv_batch_size"><a class="header" href="#tikvimportermax_kv_batch_size">tikv.importer.max_kv_batch_size</a></h4>
+<ul>
+<li>Maximal batch size transporting from clients to TiKV Server (ingest API)</li>
+<li>default: 32768 (32K)</li>
+</ul>
+<h4 id="tikvscatter_wait_seconds"><a class="header" href="#tikvscatter_wait_seconds">tikv.scatter_wait_seconds</a></h4>
+<ul>
+<li>time to wait for scattering regions</li>
+<li>default: 300 (5min)</li>
+</ul>
+<h4 id="tikvrawkvdefault_backoff_in_ms"><a class="header" href="#tikvrawkvdefault_backoff_in_ms">tikv.rawkv.default_backoff_in_ms</a></h4>
+<ul>
+<li>RawKV default backoff in milliseconds</li>
+<li>default: 20000 (20 seconds)</li>
+</ul>
+<h3 id="metrics-parameter"><a class="header" href="#metrics-parameter">Metrics Parameter</a></h3>
+<h4 id="tikvmetricsenable"><a class="header" href="#tikvmetricsenable">tikv.metrics.enable</a></h4>
+<ul>
+<li>whether to enable metrics exporting</li>
+<li>default: false</li>
+</ul>
+<h4 id="tikvmetricsport"><a class="header" href="#tikvmetricsport">tikv.metrics.port</a></h4>
+<ul>
+<li>the metrics exporting http port</li>
+<li>default: 3140</li>
+</ul>
+<h3 id="threadpool-parameter"><a class="header" href="#threadpool-parameter">ThreadPool Parameter</a></h3>
+<p>The following includes ThreadPool related parameters, which can be passed in through JVM parameters.</p>
+<h4 id="tikvbatch_get_concurrency"><a class="header" href="#tikvbatch_get_concurrency">tikv.batch_get_concurrency</a></h4>
+<ul>
+<li>the thread pool size of batchGet on client side</li>
+<li>default: 20</li>
+</ul>
+<h4 id="tikvbatch_put_concurrency"><a class="header" href="#tikvbatch_put_concurrency">tikv.batch_put_concurrency</a></h4>
+<ul>
+<li>the thread pool size of batchPut on client side</li>
+<li>default: 20</li>
+</ul>
+<h4 id="tikvbatch_delete_concurrency"><a class="header" href="#tikvbatch_delete_concurrency">tikv.batch_delete_concurrency</a></h4>
+<ul>
+<li>the thread pool size of batchDelete on client side</li>
+<li>default: 20</li>
+</ul>
+<h4 id="tikvbatch_scan_concurrency"><a class="header" href="#tikvbatch_scan_concurrency">tikv.batch_scan_concurrency</a></h4>
+<ul>
+<li>the thread pool size of batchScan on client side</li>
+<li>default: 5</li>
+</ul>
+<h4 id="tikvdelete_range_concurrency"><a class="header" href="#tikvdelete_range_concurrency">tikv.delete_range_concurrency</a></h4>
+<ul>
+<li>the thread pool size of deleteRange on client side</li>
+<li>default: 20</li>
+</ul>
+<h4 id="tikvenable_atomic_for_cas"><a class="header" href="#tikvenable_atomic_for_cas">tikv.enable_atomic_for_cas</a></h4>
+<ul>
+<li>whether to enable <code>Compare And Set</code>, set true if using <code>RawKVClient.compareAndSet</code> or <code>RawKVClient.putIfAbsent</code></li>
+<li>default: false</li>
+</ul>
+<h3 id="tls"><a class="header" href="#tls">TLS</a></h3>
+<h4 id="tikvtls_enable"><a class="header" href="#tikvtls_enable">tikv.tls_enable</a></h4>
+<ul>
+<li>whether to enable TLS</li>
+<li>default: false</li>
+</ul>
+<h4 id="tikvtrust_cert_collection"><a class="header" href="#tikvtrust_cert_collection">tikv.trust_cert_collection</a></h4>
+<ul>
+<li>Trusted certificates for verifying the remote endpoint's certificate, e.g. /home/tidb/ca.pem. The file should contain an X.509 certificate collection in PEM format.</li>
+<li>default: null</li>
+</ul>
+<h4 id="tikvkey_cert_chain"><a class="header" href="#tikvkey_cert_chain">tikv.key_cert_chain</a></h4>
+<ul>
+<li>an X.509 certificate chain file in PEM format, e.g. /home/tidb/client.pem.</li>
+<li>default: null</li>
+</ul>
+<h4 id="tikvkey_file"><a class="header" href="#tikvkey_file">tikv.key_file</a></h4>
+<ul>
+<li>a PKCS#8 private key file in PEM format. e.g. /home/tidb/client-key.pem.</li>
+<li>default: null</li>
+</ul>
+<h4 id="tikvrawkvread_timeout_in_ms"><a class="header" href="#tikvrawkvread_timeout_in_ms">tikv.rawkv.read_timeout_in_ms</a></h4>
+<ul>
+<li>RawKV read timeout in milliseconds. This parameter controls the timeout of <code>get</code> <code>getKeyTTL</code>.</li>
+<li>default: 2000 (2 seconds)</li>
+</ul>
+<h4 id="tikvrawkvwrite_timeout_in_ms"><a class="header" href="#tikvrawkvwrite_timeout_in_ms">tikv.rawkv.write_timeout_in_ms</a></h4>
+<ul>
+<li>RawKV write timeout in milliseconds. This parameter controls the timeout of <code>put</code> <code>putAtomic</code> <code>putIfAbsent</code> <code>delete</code> <code>deleteAtomic</code>.</li>
+<li>default: 2000 (2 seconds)</li>
+</ul>
+<h4 id="tikvrawkvbatch_read_timeout_in_ms"><a class="header" href="#tikvrawkvbatch_read_timeout_in_ms">tikv.rawkv.batch_read_timeout_in_ms</a></h4>
+<ul>
+<li>RawKV batch read timeout in milliseconds. This parameter controls the timeout of <code>batchGet</code>.</li>
+<li>default: 2000 (2 seconds)</li>
+</ul>
+<h4 id="tikvrawkvbatch_write_timeout_in_ms"><a class="header" href="#tikvrawkvbatch_write_timeout_in_ms">tikv.rawkv.batch_write_timeout_in_ms</a></h4>
+<ul>
+<li>RawKV batch write timeout in milliseconds. This parameter controls the timeout of <code>batchPut</code> <code>batchDelete</code> <code>batchDeleteAtomic</code>.</li>
+<li>default: 2000 (2 seconds)</li>
+</ul>
+<h4 id="tikvrawkvscan_timeout_in_ms"><a class="header" href="#tikvrawkvscan_timeout_in_ms">tikv.rawkv.scan_timeout_in_ms</a></h4>
+<ul>
+<li>RawKV scan timeout in milliseconds. This parameter controls the timeout of <code>batchScan</code> <code>scan</code> <code>scanPrefix</code>.</li>
+<li>default: 10000 (10 seconds)</li>
+</ul>
+<h4 id="tikvrawkvclean_timeout_in_ms"><a class="header" href="#tikvrawkvclean_timeout_in_ms">tikv.rawkv.clean_timeout_in_ms</a></h4>
+<ul>
+<li>RawKV clean timeout in milliseconds. This parameter controls the timeout of <code>deleteRange</code> <code>deletePrefix</code>.</li>
+<li>default: 600000 (10 minutes)</li>
+</ul>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h2 id="java-client-metrics"><a class="header" href="#java-client-metrics">Java Client Metrics</a></h2>
+<p>Client Java supports exporting metrics to Prometheus using poll mode and viewing on Grafana. The following steps shows how to enable this function.</p>
+<h3 id="step-1-enable-metrics-exporting"><a class="header" href="#step-1-enable-metrics-exporting">Step 1: Enable metrics exporting</a></h3>
+<ul>
+<li>set the config <code>tikv.metrics.enable</code> to <code>true</code></li>
+<li>call TiConfiguration.setMetricsEnable(true)</li>
+</ul>
+<h3 id="step-2-set-the-metrics-port"><a class="header" href="#step-2-set-the-metrics-port">Step 2: Set the metrics port</a></h3>
+<ul>
+<li>set the config <code>tikv.metrics.port</code></li>
+<li>call TiConfiguration.setMetricsPort</li>
+</ul>
+<p>Default port is 3140.</p>
+<h3 id="step-3-config-prometheus"><a class="header" href="#step-3-config-prometheus">Step 3: Config Prometheus</a></h3>
+<p>Add the following config to <code>conf/prometheus.yml</code> and restart Prometheus.</p>
+<pre><code class="language-yaml">- job_name: &quot;tikv-client&quot;
+    honor_labels: true
+    static_configs:
+    - targets:
+        - '127.0.0.1:3140'
+        - '127.0.0.2:3140'
+        - '127.0.0.3:3140'
+</code></pre>
+<h3 id="step-4-config-grafana"><a class="header" href="#step-4-config-grafana">Step 4: Config Grafana</a></h3>
+<p>Import the <a href="administration//metrics/grafana/client_java_summary.json">Client-Java-Summary dashboard config</a> to Grafana.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="troubleshooting"><a class="header" href="#troubleshooting">Troubleshooting</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="slow-request-diagnosis"><a class="header" href="#slow-request-diagnosis">Slow Request Diagnosis</a></h1>
+<p>If a request take too much time, we can collect the detailed time spend in each component in a “slow log”.</p>
+<!-- wrap text in the code block -->
+<pre>
+<code class="hljs" style="white-space: pre-wrap;">
+2022-02-11 11:07:56 WARN  SlowLogImpl:88 - A request spent 55 ms. start=11:07:56.938, end=11:07:56.993, SlowLog:{"trace_id":4361090673996453790,"spans":[{"event":"put","begin":"11:07:56.938","duration_ms":55,"properties":{"region":"{Region[2] ConfVer[5] Version[60] Store[1] KeyRange[]:[]}","key":"Hello"}},{"event":"getRegionByKey","begin":"11:07:56.938","duration_ms":0},{"event":"callWithRetry","begin":"11:07:56.943","duration_ms":49,"properties":{"method":"tikvpb.Tikv/RawPut"}},{"event":"gRPC","begin":"11:07:56.943","duration_ms":49,"properties":{"method":"tikvpb.Tikv/RawPut"}}]}
+</code>
+</pre>
+<h2 id="slow-log-configurations"><a class="header" href="#slow-log-configurations">Slow log configurations</a></h2>
+<table><thead><tr><th>SlowLog settings</th><th>default value</th></tr></thead><tbody>
+<tr><td>tikv.rawkv.read_slowlog_in_ms</td><td>tikv.grpc.timeout_in_ms * 2</td></tr>
+<tr><td>tikv.rawkv.write_slowlog_in_ms</td><td>tikv.grpc.timeout_in_ms * 2</td></tr>
+<tr><td>tikv.rawkv.batch_read_slowlog_in_ms</td><td>tikv.grpc.timeout_in_ms * 2</td></tr>
+<tr><td>tikv.rawkv.batch_write_slowlog_in_ms</td><td>tikv.grpc.timeout_in_ms * 2</td></tr>
+<tr><td>tikv.rawkv.scan_slowlog_in_ms</td><td>5s</td></tr>
+</tbody></table>
+<p>Each settings can be set by system properties, configuration files or <code>set...</code> method of <code>TiConfiguration</code>.</p>
+<p>System properties can be set by <code>-D</code> parameter of <code>java</code> command.</p>
+<pre><code>java -cp target/java-client-example-1.0-SNAPSHOT-jar-with-dependencies.jar -Dtikv.rawkv.read_slowlog_in_ms=100 com.example.App
+</code></pre>
+<p>Configuration file is <code>src/main/resources/tikv.properties</code> in maven projects.</p>
+<h2 id="visualize-slow-log"><a class="header" href="#visualize-slow-log">Visualize slow log</a></h2>
+<p>TBD</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="architecture"><a class="header" href="#architecture">Architecture</a></h1>
+<p>This section includes in-depthA description of the client architecture.</p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="the-lifecycle-of-a-request"><a class="header" href="#the-lifecycle-of-a-request">The Lifecycle of A Request</a></h1>
+<p><img src="architecture/./timegraph.png" alt="time graph" /></p>
+<p>The client talks to TiKV store directly using gRPC requests, which are created in RegionStoreClient. If a request failed, the client could retry after a back off sleep. The retry logic is delegated to AbstractGRPCClient::callWithRetry method. callWithRetry may decide to retry request within the function, or, if the RegionStoreClient must be recreated (due to, for example, region split), return a failure and let outermost RawKVClient to do the retry.</p>
+<p><img src="architecture/./request-overview.jpg" alt="request-overview" /></p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="availability-backoff-and-retry-policy"><a class="header" href="#availability-backoff-and-retry-policy">Availability: Backoff and Retry Policy</a></h1>
+<h2 id="backoffer"><a class="header" href="#backoffer">BackOffer</a></h2>
+<p>The retry and timeout mechanism for a request is controlled by a <code>BackOffer</code> object, which is created one per <code>RawKVClient</code> method. The <code>BackOffer</code> will decide how much time the next sleep and retry should spend, and whether to timeout the request if not enough time is left for retrying the request.
+If we need a back off sleep, we call backOffer.doBackOff(funcType, exception), and the current thread will sleep for a decided time. If the current operation will timeout after sleep, the doBackOff simply throw an exception to abort the operation.</p>
+<h2 id="callwithretry"><a class="header" href="#callwithretry">callWithRetry</a></h2>
+<p>RegionStoreClient.callWithRetry inherits from AbstractGRPCClient.callWithRetry. The concrete logic is in RetryPolicy.callWithRetry, which implements a retry mechanism, but the specific retry strategy is determined by the ErrorHandler.
+ErrorHandler’s handler{Request, Response}Error function returns a boolean value indicating whether to retry inside callWithRetry.
+The control flow for callWithRetry is as follows:</p>
+<p><img src="architecture/./callWithRetry.jpg" alt="callWithRetry" /></p>
+<p>The error handler is chosen obeying the following table:</p>
+<table><thead><tr><th>gPRC request</th><th>the result</th><th>handler</th></tr></thead><tbody>
+<tr><td>throws exception</td><td>-</td><td>handleRequestError</td></tr>
+<tr><td>no exception</td><td>is null</td><td>handleRequestError</td></tr>
+<tr><td>no exception</td><td>is error</td><td>handleResponseError</td></tr>
+<tr><td>no exception</td><td>normal</td><td>normal return</td></tr>
+</tbody></table>
+<p>The handleRequestError function copes with the following situations:</p>
+<table><thead><tr><th>situation</th><th>retry within callWithRetry</th><th>note</th></tr></thead><tbody>
+<tr><td>invalid store in region manager</td><td>true</td><td>refresh ClientStub</td></tr>
+<tr><td>region has not got multiple copies</td><td>false</td><td></td></tr>
+<tr><td>successfully switched to new leader</td><td>true</td><td></td></tr>
+<tr><td>seekProxyStore</td><td>true if success</td><td>only when <code>tikv.enable_grpc_forward</code> is set</td></tr>
+<tr><td>other</td><td>false</td><td></td></tr>
+</tbody></table>
+<p>The handleResponseError function copes with the following gRPC errors:</p>
+<table><thead><tr><th>error</th><th>retry within callWithRetry</th></tr></thead><tbody>
+<tr><td>NotLeader</td><td>true if leader unchanged</td></tr>
+<tr><td>StoreNotMatch</td><td>false</td></tr>
+<tr><td>EphochNotMatch</td><td>true if region epoch in <code>ctx</code> is ahead of TiKV's</td></tr>
+<tr><td>ServerIsBusy</td><td>true</td></tr>
+<tr><td>StaleCommand</td><td>true</td></tr>
+<tr><td>RaftEntryTooLarge</td><td>throw</td></tr>
+<tr><td>KeyNotInRegion</td><td>throw</td></tr>
+<tr><td>Raft ProposalDropped</td><td>true</td></tr>
+<tr><td>other</td><td>false</td></tr>
+</tbody></table>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="contribution-guide"><a class="header" href="#contribution-guide">Contribution Guide</a></h1>
+<h2 id="build-the-package"><a class="header" href="#build-the-package">Build the package</a></h2>
+<pre><code>mvn clean package -Dmaven.test.skip=true
+</code></pre>
+<h2 id="install-the-package-to-local-maven-repository"><a class="header" href="#install-the-package-to-local-maven-repository">Install the package to local maven repository</a></h2>
+<pre><code>mvn clean install -Dmaven.test.skip=true
+</code></pre>
+<h2 id="run-tests"><a class="header" href="#run-tests">Run tests</a></h2>
+<pre><code>export RAWKV_PD_ADDRESSES=127.0.0.1:2379
+export TXNKV_PD_ADDRESSES=127.0.0.1:2379
+mvn clean test
+</code></pre>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h2 id="bug-severity-guidelines"><a class="header" href="#bug-severity-guidelines">Bug Severity Guidelines</a></h2>
+<p>This is a <strong>working-in-progress</strong> guide about determining defects severity on
+TiKV Java Client according to the impact on the online service. The higher
+effect the defect has on the overall functionality or performance, the higher
+the severity is. There are 4 severity levels:</p>
+<ol>
+<li>Critical</li>
+<li>Major</li>
+<li>Moderate</li>
+<li>Minor</li>
+</ol>
+<p>Each severity is described with examples in the remaining contents.</p>
+<h3 id="critical-defects"><a class="header" href="#critical-defects">Critical Defects</a></h3>
+<p>A defect that affects critical data or functionality and leaves users
+with no workaround is classified as a critical defect. These defects are
+labeled with <code>type/bug</code> and <code>severity/critical</code>, can be found
+<a href="https://github.com/tikv/client-java/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3Aseverity%2Fcritical">here</a></p>
+<p>Guideline 1. A defect that breaks the API definition is regarded as critical.
+For example:</p>
+<ul>
+<li><a href="https://github.com/tikv/client-java/issues/412">client-java/issues/412</a>
+in this defect, gRPC timeout is not set for certain requests, which causes the
+requests can not be terminated as expected when the processing time is too long.</li>
+</ul>
+<h3 id="major-defects"><a class="header" href="#major-defects">Major Defects</a></h3>
+<p>A defect that affects critical data or functionality and forces users to employ
+a workaround is classified as a major defect. These defects are labeled with
+<code>type/bug</code> and <code>severity/major</code>, can be found
+<a href="https://github.com/tikv/client-java/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3Aseverity%2Fmajor">here</a></p>
+<h3 id="moderate-defects"><a class="header" href="#moderate-defects">Moderate Defects</a></h3>
+<p>A defect that affects non-critical data or functionality and forces users to
+employ a workaround is classified as moderate defect. These defects are labeled
+with <code>type/bug</code> and <code>severity/moderate</code>, can be found
+<a href="https://github.com/tikv/client-java/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3Aseverity%2Fmoderate">here</a></p>
+<h3 id="minor-defects"><a class="header" href="#minor-defects">Minor Defects</a></h3>
+<p>A defect that does not affect data or functionality. It does not even need a
+workaround. It does not impact productivity or efficiency. It is merely an
+inconvenience. These defects are labeled with <code>type/bug</code> and <code>severity/minor</code>,
+can be found
+<a href="https://github.com/tikv/client-java/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3Aseverity%2Fminor">here</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+        
+        
+
+    </body>
+</html>
